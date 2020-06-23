@@ -1,3 +1,5 @@
+import os
+import numpy as np
 import tensorflow as tf
 import datetime
 
@@ -21,9 +23,11 @@ model = create_model()
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
-
-log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+if len(os.listdir("./mnist_logs/")) == 0:
+    log_dir = "mnist_logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+else:
+    print("Model already made!")
 
 
 model.fit(x=x_train,
@@ -32,9 +36,13 @@ model.fit(x=x_train,
           validation_data=(x_test, y_test),
           callbacks=[tensorboard_callback])
 
-# print("-------------------------------------------------------------------")
+print("-------------------------------------------------------------------")
+
+for name in os.listdir("./mnist_logs/"):
+    print(name)
+
 #
-# number = np.expand_dims(x_train[0], 0)
+number = np.expand_dims(x_train[0], 0)
 #
 # print(number.shape)
-# print(model.predict(number))
+print(model.predict(number))
