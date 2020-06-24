@@ -23,6 +23,8 @@ model = create_model()
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
+
+
 if model_path not in os.listdir():
     model.fit(x=x_train,
               y=y_train,
